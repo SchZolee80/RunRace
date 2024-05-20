@@ -3,6 +3,7 @@ package com.example.runrace.controller;
 import com.example.runrace.model.Race;
 import com.example.runrace.model.Result;
 import com.example.runrace.service.RaceService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class RaceController {
      * @return A hozzáadott verseny.
      */
     @PostMapping
-    public Race addRace(@RequestBody Race race) {
+    public Race addRace(@Valid @RequestBody Race race) {
         return raceService.addRace(race);
     }
 
@@ -40,7 +41,7 @@ public class RaceController {
      * @return A hozzáadott versenyek listája.
      */
     @PostMapping("/bulk")
-    public List<Race> addRaces(@RequestBody List<Race> races) {
+    public List<Race> addRaces(@Valid @RequestBody List<Race> races) {
         return raceService.addRaces(races);
     }
 
@@ -72,7 +73,7 @@ public class RaceController {
      * @throws RuntimeException Ha a verseny nem található.
      */
     @PutMapping("/updateRace")
-    public Race updateRace(@RequestBody Race updatedRace) {
+    public Race updateRace(@Valid @RequestBody Race updatedRace) {
         return raceService.updateRace(updatedRace);
     }
 }

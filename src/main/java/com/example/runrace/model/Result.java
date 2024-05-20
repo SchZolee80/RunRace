@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity // JPA entitás jelölése
 public class Result {
@@ -14,11 +16,14 @@ public class Result {
     private int id;
 
     @ManyToOne // Kapcsolat jelölése a Runner entitással
+    @NotNull(message = "A futó nem lehet üres")
     private Runner runner;
 
     @ManyToOne // Kapcsolat jelölése a Race entitással
+    @NotNull(message = "A verseny nem lehet üres")
     private Race race;
 
+    @Min(value = 1, message = "Az időnek legalább 1 percnek kell lennie")
     private int time; // Az időeredmény percben
 
     // Alapértelmezett konstruktor, szükséges a JPA számára

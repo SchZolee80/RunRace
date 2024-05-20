@@ -2,6 +2,7 @@ package com.example.runrace.controller;
 
 import com.example.runrace.model.Result;
 import com.example.runrace.service.ResultService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class ResultController {
      * @return A hozzáadott eredmény.
      */
     @PostMapping
-    public Result addResult(@RequestBody Result result) {
+    public Result addResult(@Valid @RequestBody Result result) {
         return resultService.addResult(result);
     }
 
@@ -39,7 +40,7 @@ public class ResultController {
      * @return A hozzáadott eredmények listája.
      */
     @PostMapping("/bulk")
-    public List<Result> addResults(@RequestBody List<Result> results) {
+    public List<Result> addResults(@Valid @RequestBody List<Result> results) {
         return resultService.addResults(results);
     }
 

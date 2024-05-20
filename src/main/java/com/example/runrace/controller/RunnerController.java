@@ -2,6 +2,7 @@ package com.example.runrace.controller;
 
 import com.example.runrace.model.Runner;
 import com.example.runrace.service.RunnerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class RunnerController {
      * @return A hozzáadott futó.
      */
     @PostMapping
-    public Runner addRunner(@RequestBody Runner runner) {
+    public Runner addRunner(@Valid @RequestBody Runner runner) {
         return runnerService.addRunner(runner);
     }
 
@@ -39,7 +40,7 @@ public class RunnerController {
      * @return A hozzáadott futók listája.
      */
     @PostMapping("/bulk")
-    public List<Runner> addRunners(@RequestBody List<Runner> runners) {
+    public List<Runner> addRunners(@Valid @RequestBody List<Runner> runners) {
         return runnerService.addRunners(runners);
     }
 
