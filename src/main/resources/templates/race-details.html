@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verseny Részletek</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Verseny Részletek</h1>
+<h2 th:text="${race.name}">Verseny Neve</h2>
+<h3 th:text="'Táv: ' + ${race.distance} + ' km'">Táv</h3>
+
+<h3>Futók és Eredményeik</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Futó Neve</th>
+        <th>Idő (perc)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="result : ${results}">
+        <td th:text="${result.runner.name}">Futó Neve</td>
+        <td th:text="${result.time}">Idő</td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<a th:href="@{/races}">Vissza a versenyek listájához</a>
+</body>
+</html>

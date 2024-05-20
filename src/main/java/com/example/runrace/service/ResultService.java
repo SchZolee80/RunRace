@@ -58,4 +58,13 @@ public class ResultService {
         List<Result> results = resultRepository.findByRaceId(raceId);
         return results.stream().mapToInt(Result::getTime).average().orElse(0.0);
     }
+
+    /**
+     * Eredmények lekérdezése adott versenyre.
+     * @param raceId A verseny azonosítója.
+     * @return Az eredmények listája.
+     */
+    public List<Result> getResultsByRaceId(int raceId) {
+        return resultRepository.findByRaceIdOrderByTimeAsc(raceId);
+    }
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Új Verseny Létrehozása</title>
+</head>
+<body>
+<h1>Új Verseny Létrehozása</h1>
+<form action="#" th:action="@{/races/add}" th:object="${race}" method="post">
+    <label for="name">Név:</label>
+    <input type="text" id="name" th:field="*{name}" /><br/><br/>
+    <label for="distance">Táv (km):</label>
+    <input type="number" id="distance" th:field="*{distance}" /><br/><br/>
+    <button type="submit">Hozzáadás</button>
+</form>
+<br/>
+<a th:href="@{/races}">Vissza a versenyek listájához</a>
+</body>
+</html>
