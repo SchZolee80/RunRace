@@ -1,27 +1,29 @@
-package com.example.runrace.controller;
+package com.example.runrace.service;
 
 import com.example.runrace.model.Race;
 import com.example.runrace.model.Result;
-import com.example.runrace.service.RaceService;
+import com.example.runrace.repository.RaceRepository;
+import com.example.runrace.repository.ResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/races")
-public class RaceController {
+@Service
+public class RaceService {
 
     @Autowired
-    private RaceService raceService;
+    private RaceRepository raceRepository;
+
+    @Autowired
+    private ResultRepository resultRepository;
 
     /**
      * Összes verseny lekérdezése.
      * @return A versenyek listája.
      */
-    @GetMapping
     public List<Race> getAllRaces() {
-        return raceService.getAllRaces();
+        return raceRepository.findAll();
     }
 
     /**
@@ -29,9 +31,8 @@ public class RaceController {
      * @param race A hozzáadandó verseny.
      * @return A hozzáadott verseny.
      */
-    @PostMapping
-    public Race addRace(@RequestBody Race race) {
-        return raceService.addRace(race);
+    public Race addRace(Race race) {
+        return raceRepository.save(race);
     }
 
     /**
@@ -39,9 +40,8 @@ public class RaceController {
      * @param races A hozzáadandó versenyek listája.
      * @return A hozzáadott versenyek listája.
      */
-    @PostMapping("/bulk")
-    public List<Race> addRaces(@RequestBody List<Race> races) {
-        return raceService.addRaces(races);
+    public List<Race> addRaces(List<Race> races) {
+        return raceRepository.saveAll(races);
     }
 
     /**
@@ -50,9 +50,8 @@ public class RaceController {
      * @return A verseny, ha megtalálható.
      * @throws RuntimeException Ha a verseny nem található.
      */
-    @GetMapping("/{id}")
-    public Race getRaceById(@PathVariable int id) {
-        return raceService.getRaceById(id);
+    public Race getRaceById(int id) {
+        return raceRepository.findById(id).orElseThrow(() -> new RuntimeException("Race not found with id " + id));
     }
 
     /**
@@ -60,9 +59,8 @@ public class RaceController {
      * @param id A verseny azonosítója.
      * @return A versenyzők és eredményeik listája.
      */
-    @GetMapping("/getRaceRunners/{id}")
-    public List<Result> getRaceRunners(@PathVariable int id) {
-        return raceService.getRaceRunners(id);
+    public List<Result> getRaceRunners(int id) {
+        return resultRepository.findByRaceIdOrderByTimeAsc(id);
     }
 
     /**
@@ -71,8 +69,11 @@ public class RaceController {
      * @return A frissített verseny.
      * @throws RuntimeException Ha a verseny nem található.
      */
-    @PutMapping("/updateRace")
-    public Race updateRace(@RequestBody Race updatedRace) {
-        return raceService.updateRace(updatedRace);
+    public Race updateRace(Race updatedRace) {
+        Race race = raceRepository.findById(updatedRace.getId())
+                .orElseThrow(() -> new RuntimeException("Race not found with id " + updatedRace.getId()));
+        race.setName(updatedRace.getName());
+        race.setDistance(updatedRace.getDistance());
+        return raceRepository.save(race);
     }
 }

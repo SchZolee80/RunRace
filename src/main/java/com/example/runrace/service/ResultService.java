@@ -1,26 +1,24 @@
-package com.example.runrace.controller;
+package com.example.runrace.service;
 
 import com.example.runrace.model.Result;
-import com.example.runrace.service.ResultService;
+import com.example.runrace.repository.ResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/results")
-public class ResultController {
+@Service
+public class ResultService {
 
     @Autowired
-    private ResultService resultService;
+    private ResultRepository resultRepository;
 
     /**
      * Összes eredmény lekérdezése.
      * @return Az eredmények listája.
      */
-    @GetMapping
     public List<Result> getAllResults() {
-        return resultService.getAllResults();
+        return resultRepository.findAll();
     }
 
     /**
@@ -28,9 +26,8 @@ public class ResultController {
      * @param result A hozzáadandó eredmény.
      * @return A hozzáadott eredmény.
      */
-    @PostMapping
-    public Result addResult(@RequestBody Result result) {
-        return resultService.addResult(result);
+    public Result addResult(Result result) {
+        return resultRepository.save(result);
     }
 
     /**
@@ -38,9 +35,8 @@ public class ResultController {
      * @param results A hozzáadandó eredmények listája.
      * @return A hozzáadott eredmények listája.
      */
-    @PostMapping("/bulk")
-    public List<Result> addResults(@RequestBody List<Result> results) {
-        return resultService.addResults(results);
+    public List<Result> addResults(List<Result> results) {
+        return resultRepository.saveAll(results);
     }
 
     /**
@@ -49,9 +45,8 @@ public class ResultController {
      * @return Az eredmény, ha megtalálható.
      * @throws RuntimeException Ha az eredmény nem található.
      */
-    @GetMapping("/{id}")
-    public Result getResultById(@PathVariable int id) {
-        return resultService.getResultById(id);
+    public Result getResultById(int id) {
+        return resultRepository.findById(id).orElseThrow(() -> new RuntimeException("Result not found with id " + id));
     }
 
     /**
@@ -59,8 +54,8 @@ public class ResultController {
      * @param raceId A verseny azonosítója.
      * @return Az átlagos futási idő.
      */
-    @GetMapping("/getAverageTime/{raceId}")
-    public double getAverageTime(@PathVariable int raceId) {
-        return resultService.getAverageTime(raceId);
+    public double getAverageTime(int raceId) {
+        List<Result> results = resultRepository.findByRaceId(raceId);
+        return results.stream().mapToInt(Result::getTime).average().orElse(0.0);
     }
 }
