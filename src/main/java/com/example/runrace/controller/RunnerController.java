@@ -23,6 +23,11 @@ public class RunnerController {
     public Runner addRunner(@RequestBody Runner runner) {
         return runnerRepository.save(runner);
     }
+    //Egyszerre több futó hozzáadása
+    @PostMapping("/bulk")
+    public List<Runner> addRunners(@RequestBody List<Runner> runners) {
+        return runnerRepository.saveAll(runners);
+    }
 
     @GetMapping("/{id}")
     public Runner getRunnerById(@PathVariable int id) {

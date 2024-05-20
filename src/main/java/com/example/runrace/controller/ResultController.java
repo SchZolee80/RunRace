@@ -24,6 +24,12 @@ public class ResultController {
         return resultRepository.save(result);
     }
 
+    //Több eredmény hozzáadása
+    @PostMapping("/bulk")
+    public List<Result> addResults(@RequestBody List<Result> results) {
+        return resultRepository.saveAll(results);
+    }
+
     @GetMapping("/{id}")
     public Result getResultById(@PathVariable int id) {
         return resultRepository.findById(id).orElseThrow(() -> new RuntimeException("Result not found with id " + id));
