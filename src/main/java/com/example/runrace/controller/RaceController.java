@@ -47,7 +47,11 @@ public class RaceController {
     }
 
     @PutMapping("/updateRace")
-    public Race updateRace(@RequestBody Race race) {
+    public Race updateRace(@RequestBody Race updatedRace) {
+        Race race = raceRepository.findById(updatedRace.getId())
+                .orElseThrow(() -> new RuntimeException("Race not found with id " + updatedRace.getId()));
+        race.setName(updatedRace.getName());
+        race.setDistance(updatedRace.getDistance());
         return raceRepository.save(race);
     }
 }
