@@ -34,4 +34,10 @@ public class ResultController {
     public Result getResultById(@PathVariable int id) {
         return resultRepository.findById(id).orElseThrow(() -> new RuntimeException("Result not found with id " + id));
     }
+
+    @GetMapping("/getAverageTime/{raceId}")
+    public double getAverageTime(@PathVariable int raceId) {
+        List<Result> results = resultRepository.findByRaceId(raceId);
+        return results.stream().mapToInt(Result::getTime).average().orElse(0.0);
+    }
 }

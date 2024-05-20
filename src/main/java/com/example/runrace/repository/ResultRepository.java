@@ -10,4 +10,7 @@ import java.util.List;
 public interface ResultRepository extends JpaRepository<Result, Integer> {
     // Új metódus hozzáadása az adott verseny eredményeinek lekérdezéséhez idő szerinti növekvő sorrendben
     List<Result> findByRaceIdOrderByTimeAsc(int raceId);
+
+    // Új metódus hozzáadása az adott verseny összes eredményének lekérdezéséhez
+    List<Result> findByRaceId(int raceId);
 }
